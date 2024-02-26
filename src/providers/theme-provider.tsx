@@ -9,26 +9,28 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
       theme={{
         token: {
           colorPrimary: primaryColor,
-          borderRadius : 2,
+          borderRadius: 2,
         },
         components: {
-            Button: {
-                boxShadow :'none',
-                controlOutline : 'none',
-                colorBorder : primaryColor,
-                controlHeight : 45,
-            },
-            Input: {
-                activeShadow : 'none',
-                controlOutline : 'none',
-                controlHeight : 45,
-            },
-            Select: {
-                controlHeight : 45,
-                boxShadow : 'none',
-                controlOutline : 'none',
-            },
-        }
+          Button: {
+            boxShadow: "none",
+            controlOutline: "none",
+            colorBorder: primaryColor,
+            controlHeight: 40,
+            defaultBg: "transparent",
+            defaultHoverBg: "transparent",
+          },
+          Input: {
+            activeShadow: "none",
+            controlOutline: "none",
+            controlHeight: 40,
+          },
+          Select: {
+            controlHeight: 40,
+            boxShadow: "none",
+            controlOutline: "none",
+          },
+        },
       }}
     >
       {children}

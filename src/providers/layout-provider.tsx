@@ -47,12 +47,12 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex gap-7 bg-gray-200 h-screen">
+    <div className="flex gap-5 bg-gray-200 h-screen">
       <Sidebar />
       <div className="flex-1 overflow-y-scroll">
         <Header />
 
-        <div className="pr-5 mt-5">{children}</div>
+        <div className="">{children}</div>
       </div>
     </div>
   );

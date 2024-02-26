@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import usersGlobalStore, { UsersGlobalStoreType } from "@/store/users-store";
+import { Home, Hotel, User } from "lucide-react";
 
 function Sidebar() {
   const router = useRouter();
@@ -9,80 +9,39 @@ function Sidebar() {
   const params = useParams();
   const id = params.id;
   const [showMenu, setShowMenu] = React.useState(true);
-  const { loggedInUserData }: UsersGlobalStoreType =
-    usersGlobalStore() as UsersGlobalStoreType;
+
+  const iconSize = 16;
 
   let adminMenus: any = [
     {
       name: "Home",
       path: "/",
-      icon: "ri-home-line",
-      isActive: pathname === "/" || pathname === `/lottery/${id}`,
+      icon: <Home size={iconSize} />,
+      isActive: pathname === "/",
     },
     {
-      name: "Lotteries",
-      path: "/admin/lotteries",
-      icon: "ri-file-list-line",
-      isActive:
-        pathname === "/admin/lotteries" ||
-        pathname === "/admin/lotteries/create" ||
-        pathname === `/admin/lotteries/edit/${id}`,
+      name: "Hotels",
+      path: "/admin/hotels",
+      icon: <Hotel size={iconSize} />,
+      isActive: pathname.includes("/admin/hotels"),
     },
     {
-      name: "Tickets",
-      path: "/admin/tickets",
-      icon: "ri-coupon-line",
-      isActive: pathname === "/admin/tickets",
+      name: "Rooms",
+      path: "/admin/rooms",
+      icon: <Home size={iconSize} />,
+      isActive: pathname.includes("/admin/rooms"),
     },
     {
       name: "Users",
       path: "/admin/users",
-      icon: "ri-map-pin-user-line",
-      isActive: pathname === "/admin/users",
+      icon: <User size={iconSize} />,
     },
     {
       name: "Reports",
       path: "/admin/reports",
-      icon: "ri-money-dollar-box-line",
-      isActive: pathname === "/admin/reports",
+      icon: <User size={iconSize} />,
     },
   ];
-  let userMenus = [
-    {
-      name: "Home",
-      path: "/",
-      icon: "ri-home-line",
-      isActive: pathname === "/" || pathname === `/lottery/${id}`,
-    },
-    {
-      name: "Lotteries",
-      path: "/user/lotteries",
-      icon: "ri-file-list-line",
-      isActive: pathname === "/user/lotteries",
-    },
-    {
-      name: "Tickets",
-      path: "/user/tickets",
-      icon: "ri-coupon-line",
-      isActive: pathname === "/user/tickets",
-    },
-    {
-      name: "Reports",
-      path: "/user/reports",
-      icon: "ri-money-dollar-box-line",
-      isActive: pathname === "/user/reports",
-    },
-  ];
-
-  const [menusToShow, setMenusToShow] = React.useState<any[]>(adminMenus);
-
-  useEffect(() => {
-    if (loggedInUserData?.isAdmin) {
-      setMenusToShow(adminMenus);
-    } else {
-      setMenusToShow(userMenus);
-    }
-  }, [pathname, loggedInUserData]);
 
   return (
     <div
@@ -105,7 +64,7 @@ function Sidebar() {
           "items-center justify-center": !showMenu,
         })}
       >
-        {menusToShow.map((menu, index) => {
+        {adminMenus.map((menu: any, index: number) => {
           return (
             <div
               key={index}
@@ -117,7 +76,7 @@ function Sidebar() {
               )}
               onClick={() => router.push(menu.path)}
             >
-              <i className={`${menu.icon} text-gray-300`}></i>
+              <span className="text-gray-300">{menu.icon}</span>
               {showMenu && (
                 <span className="text-gray-300 text-sm">{menu.name}</span>
               )}

@@ -9,48 +9,28 @@ export interface UserType {
   updatedAt: string;
 }
 
-export interface LotteryType {
+export interface HotelType {
   _id: string;
   name: string;
-  description: string;
-  startDateTime: string;
-  endDateTime: string;
-  drawDateTime: string;
-  ticketPrice: number;
-
-  prizes: {
-    position: number;
-    prizeType: "cash" | "item";
-    amount: number;
-    itemName: string;
-  }[];
-
-  media: string[];
-
+  address: string;
+  email: string;
+  phoneNumber: string
+  createdBy: string | UserType;
   isActive: boolean;
-  winnersDeclared: boolean;
+  media: string[];
   createdAt: string;
   updatedAt: string;
 }
 
-export interface TicketType {
+export interface RoomType {
   _id: string;
-  user: UserType;
-  lottery: LotteryType;
-  ticketPrice: number;
-  ticketNumber: number;
-  paymentId: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface WinnerType {
-  _id: string;
-  lottery: LotteryType;
-  user: UserType;
-  ticket: TicketType;
-  ticketNumber: number;
-  position: number;
+  name: string;
+  roomType: string;
+  rentPerDay: number;
+  hotel: string | HotelType;
+  createdBy: string | UserType;
+  isActive: boolean;
+  media: string[];
   createdAt: string;
   updatedAt: string;
 }
