@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { Home, Hotel, User } from "lucide-react";
+import { Home, Hotel, Menu, User, XSquare } from "lucide-react";
 
 function Sidebar() {
   const router = useRouter();
@@ -52,11 +52,11 @@ function Sidebar() {
     >
       <h1 className="text-white text-2xl font-bold">S-L</h1>
       <div
-        className="absolute -right-3 top-5 bg-primary text-white py-2 px-1 rounded-sm cursor-pointer"
+        className="absolute -right-4 top-5 bg-primary text-white py-2 px-1 rounded-sm cursor-pointer"
         onClick={() => setShowMenu(!showMenu)}
       >
-        {showMenu && <i className="ri-close-line"></i>}
-        {!showMenu && <i className="ri-menu-line"></i>}
+        {showMenu && <XSquare />}
+        {!showMenu && <Menu />}
       </div>
 
       <div
