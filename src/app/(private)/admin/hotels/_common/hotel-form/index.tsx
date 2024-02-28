@@ -1,9 +1,10 @@
 "use client";
 
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, Upload, message } from "antd";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AddHotel, EditHotel } from "@/server-actions/hotels";
+import { UploadImagesToFirebaseAndReturnURLs } from "@/helpers/uploads";
 
 function HotelForm({
   initialData = null,
@@ -13,11 +14,15 @@ function HotelForm({
   type: "add" | "edit";
 }) {
   const [loading, setLoading] = useState(false);
+  const [newMedia = null, setNewMedia] = useState<File[]>([]);
+  const [existingMedia = null, setExistingMedia] = useState([]);
   const router = useRouter();
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     try {
       setLoading(true);
+      const newMediaUrls = await UploadImagesToFirebaseAndReturnURLs(newMedia!);
+      values.media = [...existingMedia!, ...newMediaUrls];
       let response: any;
       if (type === "add") {
         response = AddHotel(values);
@@ -87,6 +92,32 @@ function HotelForm({
         >
           <Input.TextArea />
         </Form.Item>
+      </div>
+
+      <Upload
+        listType="picture-card"
+        beforeUpload={(file: any) => {
+          setNewMedia((prev) => [...prev, file]);
+          return false;
+        }}
+      >
+        <span className="text-xs">Upload Image</span>
+      </Upload>
+
+      <div className="flex flex-wrap gap-5">
+        {existingMedia?.map((media: any) => (
+          <div className="flex flex-col items-center gap-2 cursor-pointer border border-gray-300 border-dashed p-2 rounded">
+            <img src={media} alt="room media" />
+            <span
+              className="text-red-500"
+              onClick={() =>
+                setExistingMedia((prev) => prev.filter((m) => m !== media))
+              }
+            >
+              Delete
+            </span>
+          </div>
+        ))}
       </div>
 
       <div className="flex justify-end gap-5">

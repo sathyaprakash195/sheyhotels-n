@@ -1,8 +1,10 @@
 "use client";
 import { AddRoom, EditRoom } from "@/server-actions/rooms";
-import { Button, Form, Input, Select } from "antd";
-import React, { useState } from "react";
+import { Button, Form, Input, Select, Upload, message } from "antd";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { GetHotels } from "@/server-actions/hotels";
+import { UploadImagesToFirebaseAndReturnURLs } from "@/helpers/uploads";
 
 function RoomForm({
   initialData = null,
@@ -13,12 +15,21 @@ function RoomForm({
   type: "add" | "edit";
   hotelId?: string;
 }) {
+  if (hotelId) {
+    initialData.hotel = hotelId;
+  }
+  const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [newMedia = null, setNewMedia] = useState<File[]>([]);
+  const [existingMedia = null, setExistingMedia] = useState([]);
   const router = useRouter();
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     try {
-      values.hotel = hotelId;
       setLoading(true);
+
+      const newMediaUrls = await UploadImagesToFirebaseAndReturnURLs(newMedia!);
+      values.media = [...existingMedia!, ...newMediaUrls];
+
       let response: any;
       if (type === "add") {
         response = AddRoom({ ...values, hotel: hotelId });
@@ -38,6 +49,26 @@ function RoomForm({
       setLoading(false);
     }
   };
+
+  const getHotels = async () => {
+    try {
+      setLoading(true);
+      const response: any = await GetHotels();
+      if (!response.success) {
+        throw new Error(response.message);
+      }
+      setHotels(response.data);
+    } catch (error: any) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getHotels();
+  }, []);
+
   return (
     <Form layout="vertical" initialValues={initialData} onFinish={onFinish}>
       <div className="grid grid-cols-3">
@@ -80,6 +111,21 @@ function RoomForm({
         </Form.Item>
 
         <Form.Item
+          name="hotel"
+          label="Hotel"
+          className="col-span-3"
+          rules={[{ required: true }]}
+        >
+          <Select>
+            {hotels.map((hotel: any) => (
+              <Select.Option key={hotel._id} value={hotel._id}>
+                {hotel.name}
+              </Select.Option>
+            ))}
+          </Select>
+        </Form.Item>
+
+        <Form.Item
           name="amenities"
           label="Amenities"
           className="col-span-3"
@@ -87,6 +133,32 @@ function RoomForm({
         >
           <Input.TextArea />
         </Form.Item>
+      </div>
+
+      <Upload
+        listType="picture-card"
+        beforeUpload={(file: any) => {
+          setNewMedia((prev) => [...prev, file]);
+          return false;
+        }}
+      >
+        <span className="text-xs">Upload Image</span>
+      </Upload>
+
+      <div className="flex flex-wrap gap-5">
+        {existingMedia?.map((media: any) => (
+          <div className="flex flex-col items-center gap-2 cursor-pointer border border-gray-300 border-dashed p-2 rounded">
+            <img src={media} alt="room media" />
+            <span
+              className="text-red-500"
+              onClick={() =>
+                setExistingMedia((prev) => prev.filter((m) => m !== media))
+              }
+            >
+              Delete
+            </span>
+          </div>
+        ))}
       </div>
 
       <div className="flex justify-end gap-5">

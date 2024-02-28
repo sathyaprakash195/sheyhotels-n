@@ -49,3 +49,18 @@ export const DeleteHotel = async (hotelId: string) => {
     };
   }
 };
+
+export const GetHotels = async () => {
+  try {
+    const hotels = await HotelModel.find();
+    return {
+      success: true,
+      data: JSON.parse(JSON.stringify(hotels)),
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error.message,
+    };
+  }
+}
