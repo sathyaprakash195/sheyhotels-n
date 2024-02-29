@@ -25,15 +25,15 @@ function HotelForm({
       values.media = [...existingMedia!, ...newMediaUrls];
       let response: any;
       if (type === "add") {
-        response = AddHotel(values);
+        response = await AddHotel(values);
       } else {
-        response = EditHotel({
+        response = await EditHotel({
           payload: values,
           hotelId: initialData._id,
         });
       }
-      if (!response.success) {
-        throw new Error(response.message);
+      if (response.error) {
+        throw new Error(response.error);
       }
 
       message.success(response.message);
@@ -46,7 +46,7 @@ function HotelForm({
   };
 
   return (
-    <Form layout="vertical" onFinish={onFinish}>
+    <Form layout="vertical" onFinish={onFinish} initialValues={initialData}>
       <div className="grid grid-cols-3 gap-5 mt-5">
         <Form.Item
           name="name"
@@ -100,11 +100,12 @@ function HotelForm({
           setNewMedia((prev) => [...prev, file]);
           return false;
         }}
+        className="mt-5"
       >
         <span className="text-xs">Upload Image</span>
       </Upload>
 
-      <div className="flex flex-wrap gap-5">
+      <div className="flex flex-wrap gap-5 mt-5">
         {existingMedia?.map((media: any) => (
           <div className="flex flex-col items-center gap-2 cursor-pointer border border-gray-300 border-dashed p-2 rounded">
             <img src={media} alt="room media" />

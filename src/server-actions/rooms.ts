@@ -1,10 +1,12 @@
 "use server";
 import RoomModel from "@/models/room-model";
+import { revalidatePath } from "next/cache";
 
 export const AddRoom = async (payload: any) => {
   try {
     const room = new RoomModel(payload);
     await room.save();
+    revalidatePath("/admin/rooms");
     return {
       success: true,
     };
@@ -25,6 +27,7 @@ export const EditRoom = async ({
 }) => {
   try {
     await RoomModel.findByIdAndUpdate(roomId, payload);
+    revalidatePath("/admin/rooms");
     return {
       success: true,
     };

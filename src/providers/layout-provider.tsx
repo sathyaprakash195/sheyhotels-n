@@ -52,7 +52,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
       <div className="flex-1 overflow-y-scroll">
         <Header />
 
-        <div className="">{children}</div>
+        <div className="pr-5 pb-10">{children}</div>
       </div>
     </div>
   );

@@ -25,6 +25,10 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
             controlOutline: "none",
             controlHeight: 40,
           },
+          InputNumber: {
+            controlHeight: 40,
+            controlOutline: "none",
+          },
           Select: {
             controlHeight: 40,
             boxShadow: "none",

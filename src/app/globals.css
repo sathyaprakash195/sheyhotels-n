@@ -16,15 +16,19 @@ table {
   border: 1px solid #c7c7c7;
 }
 
-.lottery-card{
+.lottery-card {
   overflow: hidden;
 }
 
-.lottery-card img{
+.lottery-card img {
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
 .lottery-card:hover img {
   transform: scale(1.1);
+}
+
+.ant-form-item {
+  margin-bottom: 0;
 }

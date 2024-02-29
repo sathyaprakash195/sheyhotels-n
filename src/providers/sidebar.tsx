@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { Home, Hotel, Menu, User, XSquare } from "lucide-react";
+import { BarChart, BedDouble, Home, Hotel, Menu, User, XSquare } from "lucide-react";
 
 function Sidebar() {
   const router = useRouter();
@@ -28,7 +28,7 @@ function Sidebar() {
     {
       name: "Rooms",
       path: "/admin/rooms",
-      icon: <Home size={iconSize} />,
+      icon: <BedDouble size={iconSize} />,
       isActive: pathname.includes("/admin/rooms"),
     },
     {
@@ -39,7 +39,7 @@ function Sidebar() {
     {
       name: "Reports",
       path: "/admin/reports",
-      icon: <User size={iconSize} />,
+      icon: <BarChart size={iconSize} />,
     },
   ];
 
@@ -69,7 +69,7 @@ function Sidebar() {
             <div
               key={index}
               className={classNames(
-                "flex gap-5 items-center cursor-pointer px-3 py-3 rounded",
+                "flex gap-3 items-center cursor-pointer px-3 py-3 rounded",
                 {
                   "bg-gray-700": menu.isActive,
                 }
@@ -78,7 +78,7 @@ function Sidebar() {
             >
               <span className="text-gray-300">{menu.icon}</span>
               {showMenu && (
-                <span className="text-gray-300 text-sm">{menu.name}</span>
+                <span className="text-gray-300 text-sm pb-[2px]">{menu.name}</span>
               )}
             </div>
           );

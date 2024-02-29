@@ -6,8 +6,16 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    roomType: {
+    number: {
+      type: Number,
+      required: true,
+    },
+    type: {
       type: String,
+      required: true,
+    },
+    bedrooms: {
+      type: Number,
       required: true,
     },
     rentPerDay: {
@@ -17,6 +25,11 @@ const roomSchema = new mongoose.Schema(
     hotel: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "hotels",
+      required: true,
+    },
+    amenities: {
+      type: String,
+      default: "",
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

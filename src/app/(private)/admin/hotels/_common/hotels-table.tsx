@@ -2,9 +2,11 @@
 import { HotelType } from "@/interfaces";
 import { Modal, Table, Tooltip, message } from "antd";
 import React from "react";
-import { Delete, Edit, Plus } from "lucide-react";
+import { Edit, PlusSquare, Trash } from "lucide-react";
 import { DeleteHotel } from "@/server-actions/hotels";
 import RoomForm from "../../rooms/_common/room-form";
+import { useRouter } from "next/navigation";
+import { formatDateTime } from "@/helpers/formats";
 
 function HotelsTable({ dataSource }: { dataSource: HotelType[] }) {
   const [loading, setLoading] = React.useState(false);
@@ -12,6 +14,7 @@ function HotelsTable({ dataSource }: { dataSource: HotelType[] }) {
   const [selectedHotel, setSelectedHotel] = React.useState<HotelType | null>(
     null
   );
+  const router = useRouter();
 
   const onDelete = (id: string) => {
     try {
@@ -34,9 +37,9 @@ function HotelsTable({ dataSource }: { dataSource: HotelType[] }) {
       key: "name",
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
     },
     {
       title: "Email",
@@ -49,19 +52,34 @@ function HotelsTable({ dataSource }: { dataSource: HotelType[] }) {
       key: "phoneNumber",
     },
     {
+      title: "Added On",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (text: any) => formatDateTime(text),
+    },
+    {
       title: "Action",
       key: "action",
       render: (text: any, record: any) => (
-        <div className="flex gap-5">
-          <Edit size={20} />
-          <Delete size={20} onClick={() => onDelete(record._id)} />
+        <div className="flex gap-5 items-center">
+          <Edit
+            size={18}
+            className="cursor-pointer text-yellow-700"
+            onClick={() => router.push(`/admin/hotels/edit/${record._id}`)}
+          />
+          <Trash
+            size={18}
+            onClick={() => onDelete(record._id)}
+            className="cursor-pointer text-red-700"
+          />
           <Tooltip title="Add Room">
-            <Plus
-              size={20}
+            <PlusSquare
+              size={18}
               onClick={() => {
                 setShowAddRoomModal(true);
                 setSelectedHotel(record);
               }}
+              className="cursor-pointer text-green-700"
             />
           </Tooltip>
         </div>

@@ -1,10 +1,12 @@
 "use server";
 import HotelModel from "@/models/hotel-model";
+import { revalidatePath } from "next/cache";
 
 export const AddHotel = async (payload: any) => {
   try {
     const hotel = new HotelModel(payload);
     await hotel.save();
+    revalidatePath("/admin/hotels");
     return {
       success: true,
     };
@@ -25,6 +27,7 @@ export const EditHotel = async ({
 }) => {
   try {
     await HotelModel.findByIdAndUpdate(hotelId, payload);
+    revalidatePath("/admin/hotels");
     return {
       success: true,
     };

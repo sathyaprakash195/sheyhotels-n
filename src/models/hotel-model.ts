@@ -22,10 +22,6 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "users",
-    },
     isActive: {
       type: Boolean,
       default: true,
