@@ -19,6 +19,7 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
             controlHeight: 40,
             defaultBg: "transparent",
             defaultHoverBg: "transparent",
+            borderColorDisabled: 'transparent',
           },
           Input: {
             activeShadow: "none",

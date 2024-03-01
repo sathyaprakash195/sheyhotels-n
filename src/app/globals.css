@@ -33,6 +33,10 @@ table {
   margin-bottom: 0;
 }
 
+.ant-form-item-label {
+  padding: 0 !important;
+}
+
 .room-tile:hover img {
   transform: scale(1.1);
 }
