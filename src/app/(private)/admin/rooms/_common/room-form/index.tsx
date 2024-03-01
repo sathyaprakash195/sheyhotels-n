@@ -26,7 +26,9 @@ function RoomForm({
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMedia = null, setNewMedia] = useState<File[]>([]);
-  const [existingMedia = null, setExistingMedia] = useState([]);
+  const [existingMedia = null, setExistingMedia] = useState<string[]>(
+    initialData?.media || []
+  );
   const router = useRouter();
   const onFinish = async (values: any) => {
     try {
@@ -170,7 +172,9 @@ function RoomForm({
       <div className="flex flex-wrap gap-5">
         {existingMedia?.map((media: any) => (
           <div className="flex flex-col items-center gap-2 cursor-pointer border border-gray-300 border-dashed p-2 rounded">
-            <img src={media} alt="room media" />
+            <img src={media} alt="room media" 
+             className="w-20 h-20 object-cover"
+            />
             <span
               className="text-red-500"
               onClick={() =>

@@ -12,7 +12,7 @@ export interface UserType {
 export interface HotelType {
   _id: string;
   name: string;
-  address: string;
+  location: string;
   email: string;
   phoneNumber: string
   createdBy: string | UserType;
@@ -25,9 +25,11 @@ export interface HotelType {
 export interface RoomType {
   _id: string;
   name: string;
-  roomType: string;
+  type: string;
   rentPerDay: number;
-  hotel: string | HotelType;
+  bedrooms: number;
+  maxCapacity: number;
+  hotel:  HotelType;
   createdBy: string | UserType;
   isActive: boolean;
   media: string[];

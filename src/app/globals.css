@@ -32,3 +32,16 @@ table {
 .ant-form-item {
   margin-bottom: 0;
 }
+
+.room-tile:hover img {
+  transform: scale(1.1);
+}
+
+.room-tile img {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.room-tile {
+  overflow: hidden;
+}
