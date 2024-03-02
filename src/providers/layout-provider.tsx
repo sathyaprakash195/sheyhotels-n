@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import Header from "./header";
-import { message } from "antd";
 import { GetCurrentUserFormMongoDB } from "@/server-actions/users";
 import usersGlobalStore, { UsersGlobalStoreType } from "@/store/users-store";
 import { usePathname } from "next/navigation";
@@ -10,12 +9,12 @@ import Spinner from "@/components/spinner";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isPublicRoute =
+  const isAuthRoute =
     pathname.includes("/sign-in") || pathname.includes("/sign-up");
 
   const { SetLoggedInUserData, loggedInUserData }: UsersGlobalStoreType =
     usersGlobalStore() as UsersGlobalStoreType;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const getLoggedInUser = async () => {
     try {
       setLoading(true);
@@ -26,19 +25,19 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
         throw new Error(response.message);
       }
     } catch (error: any) {
-      message.error(error.message);
+      localStorage.clear();
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (!isPublicRoute && !loggedInUserData) {
+    if (!isAuthRoute) {
       getLoggedInUser();
     }
   }, [pathname]);
 
-  if (isPublicRoute) {
+  if (isAuthRoute) {
     return children;
   }
 
@@ -48,11 +47,11 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex gap-5 h-screen">
-      <Sidebar />
+      {loggedInUserData?.isAdmin && <Sidebar />}
       <div className="flex-1 overflow-y-scroll">
         <Header />
 
-        <div className="pr-5 pb-10">{children}</div>
+        <div className="p-5 lg:p-10">{children}</div>
       </div>
     </div>
   );

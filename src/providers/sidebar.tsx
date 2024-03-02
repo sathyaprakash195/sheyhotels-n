@@ -1,15 +1,20 @@
 import React from "react";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import { BarChart, BedDouble, Home, Hotel, Menu, User, XSquare } from "lucide-react";
+import {
+  BarChart,
+  BedDouble,
+  Home,
+  Hotel,
+  Menu,
+  User,
+  XSquare,
+} from "lucide-react";
 
 function Sidebar() {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
-  const id = params.id;
   const [showMenu, setShowMenu] = React.useState(true);
-
   const iconSize = 16;
 
   let adminMenus: any = [
@@ -78,7 +83,9 @@ function Sidebar() {
             >
               <span className="text-gray-300">{menu.icon}</span>
               {showMenu && (
-                <span className="text-gray-300 text-sm pb-[2px]">{menu.name}</span>
+                <span className="text-gray-300 text-sm pb-[2px]">
+                  {menu.name}
+                </span>
               )}
             </div>
           );

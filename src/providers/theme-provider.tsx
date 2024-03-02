@@ -3,7 +3,7 @@ import React from "react";
 import { ConfigProvider } from "antd";
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
-  let primaryColor = "#252B37";
+  let primaryColor = "#000";
   return (
     <ConfigProvider
       theme={{
