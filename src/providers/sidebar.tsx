@@ -10,8 +10,15 @@ import {
   User,
   XSquare,
 } from "lucide-react";
+import { Drawer } from "antd";
 
-function Sidebar() {
+function Sidebar({
+  showSidebar,
+  setShowSidebar,
+}: {
+  showSidebar: boolean;
+  setShowSidebar: (value: boolean) => void;
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const [showMenu, setShowMenu] = React.useState(true);
@@ -49,23 +56,19 @@ function Sidebar() {
   ];
 
   return (
-    <div
-      className="bg-primary h-screen p-5 relative transition-all duration-300"
-      style={{
-        width: showMenu ? 250 : 80,
-      }}
+    <Drawer
+      placement="right"
+      closable={true}
+      onClose={() => setShowSidebar(false)}
+      open={showSidebar}
+      className="bg-primary"
+      closeIcon
+      title='S-L'
     >
       <h1 className="text-white text-2xl font-bold">S-L</h1>
-      <div
-        className="absolute -right-4 top-5 bg-primary text-white py-2 px-1 rounded-sm cursor-pointer"
-        onClick={() => setShowMenu(!showMenu)}
-      >
-        {showMenu && <XSquare />}
-        {!showMenu && <Menu />}
-      </div>
 
       <div
-        className={classNames("mt-20 flex flex-col gap-10", {
+        className={classNames("flex flex-col gap-10", {
           "items-center justify-center": !showMenu,
         })}
       >
@@ -81,9 +84,9 @@ function Sidebar() {
               )}
               onClick={() => router.push(menu.path)}
             >
-              <span className="text-gray-300">{menu.icon}</span>
+              <span className="text-gray-500">{menu.icon}</span>
               {showMenu && (
-                <span className="text-gray-300 text-sm pb-[2px]">
+                <span className="text-gray-500 text-sm pb-[2px]">
                   {menu.name}
                 </span>
               )}
@@ -91,7 +94,7 @@ function Sidebar() {
           );
         })}
       </div>
-    </div>
+    </Drawer>
   );
 }
 
