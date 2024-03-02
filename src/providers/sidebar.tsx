@@ -1,16 +1,10 @@
 import React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import classNames from "classnames";
-import {
-  BarChart,
-  BedDouble,
-  Home,
-  Hotel,
-  Menu,
-  User,
-  XSquare,
-} from "lucide-react";
+import { BarChart, BedDouble, Home, Hotel, List, User } from "lucide-react";
 import { Drawer } from "antd";
+import { useAuth } from "@clerk/nextjs";
+import usersGlobalStore, { UsersGlobalStoreType } from "@/store/users-store";
 
 function Sidebar({
   showSidebar,
@@ -19,12 +13,15 @@ function Sidebar({
   showSidebar: boolean;
   setShowSidebar: (value: boolean) => void;
 }) {
+  const { loggedInUserData }: UsersGlobalStoreType =
+    usersGlobalStore() as UsersGlobalStoreType;
   const router = useRouter();
   const pathname = usePathname();
-  const [showMenu, setShowMenu] = React.useState(true);
+  const { signOut } = useAuth();
+
   const iconSize = 16;
 
-  let adminMenus: any = [
+  const adminMenus: any = [
     {
       name: "Home",
       path: "/",
@@ -55,6 +52,34 @@ function Sidebar({
     },
   ];
 
+  const userMenus: any = [
+    {
+      name: "Home",
+      path: "/",
+      icon: <Home size={iconSize} />,
+      isActive: pathname === "/",
+    },
+    {
+      name: "Bookings",
+      path: "/user/bookings",
+      icon: <List size={iconSize} />,
+      isActive: pathname.includes("/user/bookings"),
+    },
+    {
+      name: "Profile",
+      path: "/user/profile",
+      icon: <User size={iconSize} />,
+      isActive: pathname.includes("/user/profile"),
+    },
+  ];
+
+  const menus = loggedInUserData?.isAdmin ? adminMenus : userMenus;
+
+  const onLogout = async () => {
+    await signOut();
+    router.push("/sign-in");
+  };
+
   return (
     <Drawer
       placement="right"
@@ -63,36 +88,39 @@ function Sidebar({
       open={showSidebar}
       className="bg-primary"
       closeIcon
-      title='S-L'
+      title="S-L"
     >
       <h1 className="text-white text-2xl font-bold">S-L</h1>
 
-      <div
-        className={classNames("flex flex-col gap-10", {
-          "items-center justify-center": !showMenu,
-        })}
-      >
-        {adminMenus.map((menu: any, index: number) => {
+      <div className="flex flex-col gap-7">
+        {menus.map((menu: any, index: number) => {
           return (
             <div
               key={index}
               className={classNames(
                 "flex gap-3 items-center cursor-pointer px-3 py-3 rounded",
                 {
-                  "bg-gray-700": menu.isActive,
+                  "bg-gray-700 text-white": menu.isActive,
                 }
               )}
-              onClick={() => router.push(menu.path)}
+              onClick={() => {
+                router.push(menu.path);
+                setShowSidebar(false);
+              }}
             >
-              <span className="text-gray-500">{menu.icon}</span>
-              {showMenu && (
-                <span className="text-gray-500 text-sm pb-[2px]">
-                  {menu.name}
-                </span>
-              )}
+              <span>{menu.icon}</span>
+
+              <span>{menu.name}</span>
             </div>
           );
         })}
+
+        <span
+          className="text-center text-red-500 text-sm cursor-pointer"
+          onClick={onLogout}
+        >
+          Sign out
+        </span>
       </div>
     </Drawer>
   );

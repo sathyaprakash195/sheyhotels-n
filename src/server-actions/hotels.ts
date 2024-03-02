@@ -9,6 +9,7 @@ export const AddHotel = async (payload: any) => {
     revalidatePath("/admin/hotels");
     return {
       success: true,
+      message : "Hotel added successfully"
     };
   } catch (error: any) {
     return {
@@ -30,6 +31,7 @@ export const EditHotel = async ({
     revalidatePath("/admin/hotels");
     return {
       success: true,
+      message: "Hotel updated successfully",
     };
   } catch (error: any) {
     return {

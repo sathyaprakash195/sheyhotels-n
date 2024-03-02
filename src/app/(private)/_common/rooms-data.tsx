@@ -6,7 +6,7 @@ async function RoomsData({ searchParams }: { searchParams: any }) {
   const response = await RoomModel.find().populate("hotel");
   const rooms = JSON.parse(JSON.stringify(response));
   return (
-    <div className="grid grid-cols-3 gap-5">
+    <div className="grid grid-cols-3 gap-10">
       {rooms.map((room: any) => (
         <RoomTile key={room.id} room={room} />
       ))}

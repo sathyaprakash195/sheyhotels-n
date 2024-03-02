@@ -5,7 +5,7 @@ import React from "react";
 import HotelsTable from "./_common/hotels-table";
 
 async function HotelsPage() {
-  const response = await HotelModel.find({});
+  const response = await HotelModel.find({}).sort({ createdAt: -1 });
   const hotelsData = JSON.parse(JSON.stringify(response));
   return (
     <div>

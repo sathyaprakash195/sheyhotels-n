@@ -10,12 +10,12 @@ function RoomTile({ room }: { room: RoomType }) {
       className="border border-gray-300 border-solid room-tile cursor-pointer"
       onClick={() => router.push(`/book-room/${room._id}`)}
     >
-      <img src={mainImage} alt="room" className="w-full" />
+      <img src={mainImage} alt="room" className="w-full h-60" />
       <div className="py-3 px-2 flex flex-col">
         <h1 className="text-sm">{room.name}</h1>
         <span className="text-gray-500 text-sm">{room.hotel.name}</span>
       </div>
-      <hr className="border-t border-gray-300 border-solid" />
+      <hr className="border-t border-gray-200 border-solid" />
 
       <div className="flex justify-between p-2">
         <span className="text-sm">Rent Per Day</span>

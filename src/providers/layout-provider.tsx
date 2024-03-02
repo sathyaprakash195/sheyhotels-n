@@ -32,7 +32,7 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (!isAuthRoute) {
+    if (!isAuthRoute && !loggedInUserData?._id) {
       getLoggedInUser();
     }
   }, [pathname]);
@@ -46,13 +46,9 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex gap-5 h-screen">
-      {loggedInUserData?.isAdmin && <Sidebar />}
-      <div className="flex-1 overflow-y-scroll">
-        <Header />
-
-        <div className="p-5 lg:p-10">{children}</div>
-      </div>
+    <div className="flex flex-col gap-5 h-screen">
+      <Header />
+      <div className="p-5 lg:px-10">{children}</div>
     </div>
   );
 }
